@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 4 — LB(N) and Shannon — IT by Yana Lukyanava</title>
     
-    <!-- Подключение MathJax для красивых формул -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
@@ -53,23 +52,10 @@
             margin-bottom: 25px;
         }
 
-        .box h3 {
-            color: #8B5A6B;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
+        .box h3 { color: #8B5A6B; font-size: 1.5rem; margin-bottom: 15px; }
+        .box p { color: #A88B94; margin-bottom: 15px; font-size: 0.95rem; }
 
-        .box p {
-            color: #A88B94;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
-
-        .formula {
-            font-size: 1.2rem;
-            color: #8B5A6B;
-            margin-bottom: 20px;
-        }
+        .formula { font-size: 1.2rem; color: #8B5A6B; margin-bottom: 20px; }
 
         .input-group {
             display: flex;
@@ -93,7 +79,6 @@
             font-family: inherit;
             transition: border-color 0.2s;
         }
-
         input[type="number"]:focus { border-color: #FF9AA8; }
 
         .btn {
@@ -108,15 +93,9 @@
             transition: background 0.2s;
             font-family: inherit;
         }
-
         .btn:hover { background-color: #FF9AA8; }
 
-        .result {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2da44e;
-            min-height: 35px;
-        }
+        .result { font-size: 1.5rem; font-weight: bold; color: #2da44e; min-height: 35px; }
 
         .shannon-inputs {
             display: flex;
@@ -125,7 +104,6 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
         .shannon-inputs input { width: 70px; }
 
         .photo-gallery {
@@ -136,10 +114,7 @@
             flex-wrap: wrap;
         }
 
-        .person {
-            text-align: center;
-            width: 85px;
-        }
+        .person { text-align: center; width: 85px; }
 
         .person img {
             width: 75px;
@@ -199,7 +174,6 @@
         <p>LB(N) and Shannon entropy</p>
     </div>
 
-    <!-- Блок 1: Binary Algorithm -->
     <div class="box">
         <h3>Binary algorithm</h3>
         <div class="formula">\( H = K \cdot \text{LB}(N) \)</div>
@@ -214,7 +188,6 @@
         </div>
     </div>
 
-    <!-- Блок 2: Shannon Entropy -->
     <div class="box">
         <h3>Shannon entropy</h3>
         
@@ -232,25 +205,25 @@
         <button class="btn" onclick="calculateShannon()">=</button>
         <div class="result" id="shannonResult"></div>
 
-        <!-- Картинки для галереи (надежный фотосток) -->
+        <!-- Картинки для галереи (ссылки на Wikimedia Commons) -->
         <div class="photo-gallery">
             <div class="person">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Mark Zuckerberg">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/200px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" alt="Mark Zuckerberg">
                 <div class="name">Mark<br>Zuckerberg</div>
                 <div class="prob">P(1) = 50%</div>
             </div>
             <div class="person">
-                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Sergey Brin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sergey_Brin_%282018%29.jpg/200px-Sergey_Brin_%282018%29.jpg" alt="Sergey Brin">
                 <div class="name">Sergey<br>Brin</div>
                 <div class="prob">P(2) = 25%</div>
             </div>
             <div class="person">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Stefan Quandt">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Stefan_Quandt_2018.jpg/200px-Stefan_Quandt_2018.jpg" alt="Stefan Quandt">
                 <div class="name">Stefan<br>Quandt</div>
                 <div class="prob">P(3) = 12.5%</div>
             </div>
             <div class="person">
-                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Prince Al Saud">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Prince_Al_Saud.jpg/200px-Prince_Al_Saud.jpg" alt="Prince Al Saud">
                 <div class="name">Prince Al<br>Saud</div>
                 <div class="prob">P(4) = 12.5%</div>
             </div>

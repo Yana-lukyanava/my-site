@@ -1,58 +1,183 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ABBA Calculation</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1 — ABBA — IT by Yana Lukyanava</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background-color: #FFF5F7;
-      color: #5A4A4D;
-      font-family: 'Nunito', 'Segoe UI', sans-serif;
-      line-height: 1.6;
-      padding: 40px 20px;
-    }
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background-color: #FFF5F7;
+            color: #5A4A4D;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      background: #FFFFFF;
-      border-radius: 28px;
-      box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25);
-      padding: 45px 40px;
-    }
+        /* Навигация сверху */
+        .nav {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #FFDEE6;
+            padding-bottom: 15px;
+        }
+        
+        .nav h1 { font-size: 1.2rem; color: #8B5A6B; }
+        .nav-links a { 
+            margin-left: 15px; 
+            text-decoration: none; 
+            color: #FF9AA8; 
+            font-weight: 600;
+        }
+        .nav-links a:hover { text-decoration: underline; }
 
-    .back {
-      display: inline-block;
-      color: #FF9AA8;
-      text-decoration: none;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
+        /* Основное окно калькулятора */
+        .calculator-box {
+            background: #FFFFFF;
+            border: 1px solid #FFDEE6;
+            border-radius: 28px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25);
+        }
 
-    .back:hover { text-decoration: underline; }
+        .calculator-box h2 {
+            color: #8B5A6B;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
 
-    h1 {
-      font-size: 1.8rem;
-      color: #8B5A6B;
-      margin-bottom: 20px;
-    }
+        .calculator-box p {
+            color: #A88B94;
+            margin-bottom: 20px;
+        }
 
-    p { margin-bottom: 14px; }
+        input[type="text"] {
+            width: 85%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #FFD1DC;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            outline: none;
+            font-family: inherit;
+            color: #5A4A4D;
+            transition: border-color 0.2s;
+        }
 
-    @media (max-width: 520px) {
-      .container { padding: 30px 20px; }
-    }
-  </style>
+        input[type="text"]:focus {
+            border-color: #FF9AA8;
+        }
+
+        /* Блок с результатами */
+        .results {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .number {
+            font-size: 2.2em;
+            color: #FF9AA8;
+        }
+
+        .label {
+            font-size: 0.8em;
+            color: #B89AA3;
+            font-weight: normal;
+        }
+
+        .multiply {
+            font-size: 1.5em;
+            color: #FFD1DC;
+            padding-top: 10px;
+        }
+
+        @media (max-width: 520px) {
+            .nav { flex-direction: column; gap: 10px; }
+            .calculator-box { padding: 30px 20px; }
+            .results { gap: 8px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back">← Назад</a>
-    <h1>ABBA Calculation</h1>
-    <p>Здесь будет содержание проекта.</p>
-    <p>Пока это заготовка — можете добавить сюда текст, картинки, код или ссылки.</p>
-  </div>
+
+    <div class="nav">
+        <h1>IT by Yana Lukyanava</h1>
+        <div class="nav-links">
+            <a href="index.html">← На главную</a>
+        </div>
+    </div>
+
+    <div class="calculator-box">
+        <h2>ABBA Calculation</h2>
+        <p>Введите слово или предложение:</p>
+        
+        <input type="text" id="inputText" placeholder="Печатайте здесь..." oninput="calculateABBA()">
+        
+        <div class="results">
+            <div class="result-item">
+                <span class="number" id="vowelCount">0</span>
+                <span class="label">гласных</span>
+            </div>
+            
+            <div class="multiply">×</div>
+            
+            <div class="result-item">
+                <span class="number" id="consonantCount">0</span>
+                <span class="label">согласных</span>
+            </div>
+
+            <div class="multiply">=</div>
+
+            <div class="result-item">
+                <span class="number" id="finalResult" style="color: #2da44e;">0</span>
+                <span class="label">результат</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateABBA() {
+            const text = document.getElementById('inputText').value.toLowerCase();
+            
+            // Регулярное выражение для гласных (английские и русские)
+            const vowelsMatch = text.match(/[aeiouyаеёиоуыэюя]/g);
+            // Регулярное выражение для согласных (добавил ъ и ь в исключения)
+            const consonantsMatch = text.match(/[bcdfghjklmnpqrstvwxzбвгджзйклмнпрстфхцчшщ]/g);
+
+            const vowels = vowelsMatch ? vowelsMatch.length : 0;
+            const consonants = consonantsMatch ? consonantsMatch.length : 0;
+            
+            // Умножаем количество гласных на количество согласных
+            const result = vowels * consonants;
+
+            // Выводим результат на экран
+            document.getElementById('vowelCount').textContent = vowels;
+            document.getElementById('consonantCount').textContent = consonants;
+            document.getElementById('finalResult').textContent = result;
+        }
+    </script>
+
 </body>
 </html>

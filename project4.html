@@ -65,7 +65,6 @@
             font-size: 0.95rem;
         }
 
-        /* Стили для формул и калькулятора */
         .formula {
             font-size: 1.2rem;
             color: #8B5A6B;
@@ -95,9 +94,7 @@
             transition: border-color 0.2s;
         }
 
-        input[type="number"]:focus {
-            border-color: #FF9AA8;
-        }
+        input[type="number"]:focus { border-color: #FF9AA8; }
 
         .btn {
             padding: 8px 20px;
@@ -121,7 +118,6 @@
             min-height: 35px;
         }
 
-        /* Стили для энтропии Шеннона */
         .shannon-inputs {
             display: flex;
             justify-content: center;
@@ -130,30 +126,29 @@
             flex-wrap: wrap;
         }
 
-        .shannon-inputs input {
-            width: 70px;
-        }
+        .shannon-inputs input { width: 70px; }
 
         .photo-gallery {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
             margin-top: 30px;
             flex-wrap: wrap;
         }
 
         .person {
             text-align: center;
-            width: 80px;
+            width: 85px;
         }
 
         .person img {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             border-radius: 12px;
             object-fit: cover;
             border: 2px solid #FFD1DC;
             margin-bottom: 5px;
+            background-color: #FFF0F4; /* Плейсхолдер на случай долгой загрузки */
         }
 
         .person .name {
@@ -237,25 +232,25 @@
         <button class="btn" onclick="calculateShannon()">=</button>
         <div class="result" id="shannonResult"></div>
 
-        <!-- Картинки для галереи -->
+        <!-- Картинки для галереи (надежные источники) -->
         <div class="photo-gallery">
             <div class="person">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg/200px-Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" alt="Mark Zuckerberg">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg" alt="Mark Zuckerberg">
                 <div class="name">Mark<br>Zuckerberg</div>
                 <div class="prob">P(1) = 50%</div>
             </div>
             <div class="person">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sergey_Brin_%282018%29.jpg/200px-Sergey_Brin_%282018%29.jpg" alt="Sergey Brin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Sergey_Brin_%282018%29.jpg" alt="Sergey Brin">
                 <div class="name">Sergey<br>Brin</div>
                 <div class="prob">P(2) = 25%</div>
             </div>
             <div class="person">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Stefan_Quandt_2018.jpg/200px-Stefan_Quandt_2018.jpg" alt="Stefan Quandt">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Stefan_Quandt_2018.jpg" alt="Stefan Quandt">
                 <div class="name">Stefan<br>Quandt</div>
                 <div class="prob">P(3) = 12.5%</div>
             </div>
             <div class="person">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Prince_Al_Saud.jpg/200px-Prince_Al_Saud.jpg" alt="Prince Al Saud">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Prince_Al_Saud.jpg" alt="Prince Al Saud">
                 <div class="name">Prince Al<br>Saud</div>
                 <div class="prob">P(4) = 12.5%</div>
             </div>
@@ -265,21 +260,18 @@
     <a href="index.html" class="btn-back">Back to Home</a>
 
     <script>
-        // Функция для калькулятора логарифма
         function calculateLB() {
             const n = parseFloat(document.getElementById('nInput').value);
             const resultElement = document.getElementById('logResult');
             
             if (n > 0) {
                 const result = Math.log2(n);
-                // Округляем до 3 знаков, убирая лишние нули
                 resultElement.textContent = parseFloat(result.toFixed(3));
             } else {
                 resultElement.textContent = "Ошибка";
             }
         }
 
-        // Функция для расчета энтропии Шеннона
         function calculateShannon() {
             const pInputs = [
                 parseFloat(document.getElementById('p1').value),
@@ -291,11 +283,9 @@
             const resultElement = document.getElementById('shannonResult');
             let entropy = 0;
 
-            // Считаем сумму p * log2(p)
             for (let i = 0; i < pInputs.length; i++) {
                 let p = pInputs[i];
                 if (!isNaN(p) && p > 0) {
-                    // Переводим проценты в доли (50 -> 0.5)
                     let fraction = p / 100;
                     entropy -= fraction * Math.log2(fraction);
                 }
@@ -310,7 +300,6 @@
             }
         }
 
-        // Запускаем расчеты при загрузке страницы
         window.onload = function() {
             calculateLB();
             calculateShannon();

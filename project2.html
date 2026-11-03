@@ -18,7 +18,7 @@
             line-height: 1.6;
         }
 
-        /* Навигация сверху */
+        /* Навигация */
         .nav {
             width: 100%;
             max-width: 600px;
@@ -29,7 +29,6 @@
             border-bottom: 1px solid #FFDEE6;
             padding-bottom: 15px;
         }
-        
         .nav h1 { font-size: 1.2rem; color: #8B5A6B; }
         .nav-links a { 
             text-decoration: none; 
@@ -56,35 +55,44 @@
             font-size: 1.8rem;
         }
 
-        .calculator-box p {
-            color: #A88B94;
-            margin-bottom: 10px;
+        p.subtitle { 
+            color: #A88B94; 
+            margin-bottom: 25px; 
         }
 
-        input[type="text"] {
-            width: 85%;
-            padding: 12px 15px;
-            font-size: 22px;
-            letter-spacing: 5px;
+        /* Контейнер для 7 квадратиков */
+        .bits-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* Стили для каждого квадратика ввода */
+        .bit-input {
+            width: 45px;
+            height: 55px;
+            font-size: 24px;
+            font-family: monospace;
             text-align: center;
             border: 2px solid #FFD1DC;
-            border-radius: 30px;
-            margin-bottom: 20px;
-            margin-top: 10px;
-            font-family: monospace;
-            outline: none;
+            border-radius: 12px;
+            background-color: #FFF5F7;
             color: #5A4A4D;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
         }
 
-        input[type="text"]:focus {
+        /* Подсветка при фокусе (когда на него нажали) */
+        .bit-input:focus {
+            outline: none;
             border-color: #FF9AA8;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
         }
 
         /* Блок с результатом */
         .result-box {
-            margin-top: 30px;
-            padding: 25px 20px;
+            padding: 20px;
             background-color: #FFF0F4;
             border-radius: 18px;
             border: 1px solid #FFDEE6;
@@ -101,11 +109,17 @@
             font-weight: bold;
             color: #FF9AA8;
             font-family: monospace;
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         @media (max-width: 520px) {
             .nav { flex-direction: column; gap: 10px; }
-            .calculator-box { padding: 30px 20px; }
+            .calculator-box { padding: 30px 15px; }
+            .bits-container { gap: 5px; }
+            .bit-input { width: 35px; height: 45px; font-size: 20px; }
         }
     </style>
 </head>
@@ -120,10 +134,18 @@
 
     <div class="calculator-box">
         <h2>Boolean logic</h2>
-        <p>Семь бит. Индекс — это их четность.</p>
-        <p style="font-size: 0.9em; color: #B89AA3;">Введите 7 бит (0 или 1):</p>
+        <p class="subtitle">Семь бит. Индекс — это их четность.</p>
         
-        <input type="text" id="bitsInput" maxlength="7" placeholder="1011001" oninput="calculateParity()">
+        <!-- 7 полей для ввода битов -->
+        <div class="bits-container" id="bitsContainer">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 0)" onkeydown="handleKeyDown(event, this, 0)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 1)" onkeydown="handleKeyDown(event, this, 1)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 2)" onkeydown="handleKeyDown(event, this, 2)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 3)" onkeydown="handleKeyDown(event, this, 3)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 4)" onkeydown="handleKeyDown(event, this, 4)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 5)" onkeydown="handleKeyDown(event, this, 5)">
+            <input type="text" class="bit-input" maxlength="1" oninput="handleInput(this, 6)" onkeydown="handleKeyDown(event, this, 6)">
+        </div>
         
         <div class="result-box">
             <div class="result-label">Index (Parity Bit)</div>
@@ -132,33 +154,69 @@
     </div>
 
     <script>
-        function calculateParity() {
-            const input = document.getElementById('bitsInput').value;
+        // При загрузке страницы ставим курсор в первое окошко
+        window.onload = function() {
+            document.querySelector('.bit-input').focus();
+        };
+
+        // Функция для фильтрации ввода (разрешаем только 0 и 1)
+        function handleInput(inputElement, index) {
+            // Удаляем всё, кроме 0 и 1
+            inputElement.value = inputElement.value.replace(/[^01]/g, '');
+            
+            // Если пользователь ввел цифру, переводим курсор на следующее поле автоматически
+            if (inputElement.value !== "" && index < 6) {
+                const inputs = document.querySelectorAll('.bit-input');
+                inputs[index + 1].focus();
+            }
+
+            // Проверяем, заполнены ли все 7 полей
+            checkAndCalculate();
+        }
+
+        // Обработка нажатия клавиш (чтобы можно было стирать Backspace)
+        function handleKeyDown(event, inputElement, index) {
+            // Если нажат Backspace и поле пустое, переводим курсор назад
+            if (event.key === 'Backspace' && inputElement.value === '' && index > 0) {
+                const inputs = document.querySelectorAll('.bit-input');
+                inputs[index - 1].focus();
+                // Удаляем символ в предыдущем поле
+                inputs[index - 1].value = '';
+                checkAndCalculate();
+            }
+        }
+
+        // Функция подсчета четности
+        function checkAndCalculate() {
+            const inputs = document.querySelectorAll('.bit-input');
+            let values = [];
+            let allFilled = true;
+
+            // Собираем значения из всех полей
+            inputs.forEach(input => {
+                if (input.value === '') {
+                    allFilled = false;
+                } else {
+                    values.push(input.value);
+                }
+            });
+
             const resultElement = document.getElementById('parityResult');
 
-            // Очищаем ввод от всего, кроме 0 и 1 (без принудительной замены поля!)
-            const cleanInput = input.replace(/[^01]/g, '');
+            // Если все 7 бит введены, считаем результат
+            if (allFilled && values.length === 7) {
+                let onesCount = 0;
+                values.forEach(bit => {
+                    if (bit === '1') onesCount++;
+                });
 
-            // Если ввели не 7 символов, ничего не считаем
-            if (cleanInput.length !== 7) {
+                // Если единиц нечетное количество, бит четности (Index) будет 1
+                let parityBit = (onesCount % 2 !== 0) ? '1' : '0';
+                resultElement.textContent = parityBit;
+            } else {
+                // Если не все биты введены, показываем прочерк
                 resultElement.textContent = '-';
-                return;
             }
-
-            // Считаем количество единиц
-            let onesCount = 0;
-            for (let i = 0; i < cleanInput.length; i++) {
-                if (cleanInput[i] === '1') {
-                    onesCount++;
-                }
-            }
-
-            // Вычисляем бит четности (Even Parity)
-            // Если единиц нечетное количество, добавляем 1, чтобы стало четным
-            let parityBit = (onesCount % 2 !== 0) ? '1' : '0';
-
-            // Выводим результат
-            resultElement.textContent = parityBit;
         }
     </script>
 

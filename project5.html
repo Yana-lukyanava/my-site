@@ -48,7 +48,6 @@
             margin-bottom: 25px;
         }
 
-        /* Картинки */
         .images-container {
             display: flex;
             justify-content: center;
@@ -74,7 +73,6 @@
             object-fit: contain;
         }
 
-        /* Вероятности */
         .probs {
             display: flex;
             justify-content: center;
@@ -89,9 +87,9 @@
             color: #A88B94;
             font-size: 0.95rem;
             margin-bottom: 25px;
+            height: 24px;
         }
 
-        /* Кнопки */
         .btn-group {
             display: flex;
             justify-content: center;
@@ -109,17 +107,9 @@
             font-family: inherit;
         }
 
-        .btn-generate {
-            background-color: #FFB6C1;
-            color: white;
-        }
+        .btn-generate { background-color: #FFB6C1; color: white; }
         .btn-generate:hover { background-color: #FF9AA8; }
-
-        .btn-delete {
-            background-color: #FFF0F4;
-            color: #8B5A6B;
-            border: 1px solid #FFDEE6;
-        }
+        .btn-delete { background-color: #FFF0F4; color: #8B5A6B; border: 1px solid #FFDEE6; }
         .btn-delete:hover { background-color: #FFDEE6; }
 
         .btn-back { 
@@ -135,7 +125,6 @@
         }
         .btn-back:hover { background-color: #FFDEE6; }
 
-        /* Анимация для выпавшей буквы */
         .big-result {
             font-size: 5rem;
             font-weight: bold;
@@ -144,9 +133,7 @@
             margin-bottom: 10px;
             transition: transform 0.1s;
         }
-        .pop {
-            transform: scale(1.2);
-        }
+        .pop { transform: scale(1.2); }
 
         @media (max-width: 520px) {
             .nav { flex-direction: column; gap: 10px; }
@@ -170,30 +157,28 @@
     </div>
 
     <div class="box">
-        <!-- Картинки с интернета (собачка и буквы) -->
         <div class="images-container">
             <div class="img-box">
+                <!-- Собачка -->
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bowser_%28Dog%29.jpg/240px-Bowser_%28Dog%29.jpg" alt="BOW WOW" onerror="this.src='https://cdn-icons-png.flaticon.com/512/616/616408.png'">
             </div>
             <div class="img-box" style="display: flex; flex-direction: column;">
+                <!-- Буквы -->
                 <div style="font-size: 2.5rem; font-weight: 900; color: #8B5A6B; line-height: 1;">WB</div>
                 <div style="font-size: 2.5rem; font-weight: 900; color: #8B5A6B; line-height: 1;">BW</div>
             </div>
         </div>
 
-        <!-- Заданные вероятности -->
         <div class="probs">
             <span>W 50%</span>
             <span>O 37.5%</span>
             <span>B 12.5%</span>
         </div>
 
-        <!-- Вывод текущей статистики -->
         <div class="stats" id="statsDisplay">
             So far: W 0% · O 0% · B 0%
         </div>
 
-        <!-- Результат выпадения -->
         <div class="big-result" id="bigResult"></div>
 
         <div class="btn-group">
@@ -205,44 +190,68 @@
     <a href="index.html" class="btn-back">Back to Home</a>
 
     <script>
-        // Переменные для подсчета статистики
-        let countW = 0;
-        let countO = 0;
-        let countB = 0;
+        // Идеальные доли (вероятности)
+        const targetP = {
+            W: 0.50,
+            O: 0.375,
+            B: 0.125
+        };
+
+        let counts = { W: 0, O: 0, B: 0 };
+        let total = 0;
 
         function generateLetter() {
-            // Генерируем случайное число от 0 до 100
-            const random = Math.random() * 100;
-            let letter = '';
+            // Вычисляем, насколько текущая доля отстает от идеальной
+            // (Идеальное количество - реальное количество)
+            let targetW = targetP.W * (total + 1) - counts.W;
+            let targetO = targetP.O * (total + 1) - counts.O;
+            let targetB = targetP.B * (total + 1) - counts.B;
 
-            // Распределяем вероятности: W - 50%, O - 37.5%, B - 12.5%
-            if (random < 50) {
-                letter = 'W';
-                countW++;
-            } else if (random < 87.5) { // 50 + 37.5 = 87.5
-                letter = 'O';
-                countO++;
-            } else {
-                letter = 'B';
-                countB++;
+            // Если какая-то буква в минусе (выпадала слишком часто), её вес становится 0
+            // (Это гарантирует, что мы не будем выбирать её, пока другие не догонят)
+            if (targetW < 0) targetW = 0;
+            if (targetO < 0) targetO = 0;
+            if (targetB < 0) targetB = 0;
+
+            // Сумма весов
+            let sum = targetW + targetO + targetB;
+            
+            // Если вдруг сумма 0 (такое бывает при идеальном балансе), берем базовые вероятности
+            if (sum === 0) {
+                targetW = targetP.W;
+                targetO = targetP.O;
+                targetB = targetP.B;
+                sum = 1;
             }
 
-            // Показываем букву
+            // Генерируем случайное число от 0 до суммы весов
+            let r = Math.random() * sum;
+            let letter = '';
+
+            // Выбираем букву на основе вычисленных весов
+            if (r < targetW) {
+                letter = 'W';
+            } else if (r < targetW + targetO) {
+                letter = 'O';
+            } else {
+                letter = 'B';
+            }
+
+            // Обновляем счетчики
+            counts[letter]++;
+            total++;
+
+            // Показываем букву с анимацией
             const resultElement = document.getElementById('bigResult');
             resultElement.textContent = letter;
-            
-            // Добавляем анимацию
             resultElement.classList.add('pop');
-            setTimeout(() => {
-                resultElement.classList.remove('pop');
-            }, 150);
+            setTimeout(() => resultElement.classList.remove('pop'), 150);
 
             // Обновляем статистику
             updateStats();
         }
 
         function updateStats() {
-            const total = countW + countO + countB;
             const statsElement = document.getElementById('statsDisplay');
 
             if (total === 0) {
@@ -251,20 +260,16 @@
             }
 
             // Считаем проценты
-            const percentW = ((countW / total) * 100).toFixed(1);
-            const percentO = ((countO / total) * 100).toFixed(1);
-            const percentB = ((countB / total) * 100).toFixed(1);
+            const percentW = ((counts.W / total) * 100).toFixed(1);
+            const percentO = ((counts.O / total) * 100).toFixed(1);
+            const percentB = ((counts.B / total) * 100).toFixed(1);
 
             statsElement.textContent = `So far: W ${percentW}% · O ${percentO}% · B ${percentB}%`;
         }
 
         function deleteStats() {
-            // Сбрасываем все счетчики
-            countW = 0;
-            countO = 0;
-            countB = 0;
-
-            // Очищаем экран
+            counts = { W: 0, O: 0, B: 0 };
+            total = 0;
             document.getElementById('bigResult').textContent = '';
             updateStats();
         }

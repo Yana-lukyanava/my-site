@@ -1,58 +1,256 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nash Equilibrium</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 6 — Nash Equilibrium — IT by Yana Lukyanava</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background-color: #FFF5F7;
-      color: #5A4A4D;
-      font-family: 'Nunito', 'Segoe UI', sans-serif;
-      line-height: 1.6;
-      padding: 40px 20px;
-    }
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background-color: #FFF5F7;
+            color: #5A4A4D;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      background: #FFFFFF;
-      border-radius: 28px;
-      box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25);
-      padding: 45px 40px;
-    }
+        .nav {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #FFDEE6;
+            padding-bottom: 15px;
+        }
+        .nav h1 { font-size: 1.2rem; color: #8B5A6B; }
+        .nav-links a { text-decoration: none; color: #FF9AA8; font-weight: 600; }
+        .nav-links a:hover { text-decoration: underline; }
 
-    .back {
-      display: inline-block;
-      color: #FF9AA8;
-      text-decoration: none;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h2 { margin: 0 0 5px 0; font-size: 2.2rem; color: #8B5A6B; }
+        .header p { margin: 0; color: #A88B94; font-size: 1rem; }
 
-    .back:hover { text-decoration: underline; }
+        /* Контейнер для симуляции */
+        .simulation-container {
+            width: 100%;
+            max-width: 700px;
+            background: #FFFFFF;
+            border: 1px solid #FFDEE6;
+            border-radius: 28px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25);
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-    h1 {
-      font-size: 1.8rem;
-      color: #8B5A6B;
-      margin-bottom: 20px;
-    }
+        .btn-run {
+            background-color: #FFB6C1;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+            font-family: inherit;
+            margin-bottom: 30px;
+        }
+        .btn-run:hover { background-color: #FF9AA8; }
 
-    p { margin-bottom: 14px; }
+        /* Сетка для результатов */
+        .results-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
-    @media (max-width: 520px) {
-      .container { padding: 30px 20px; }
-    }
-  </style>
+        .result-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .col-header {
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header-decisions { background-color: #FF9AA8; }
+        .header-betrayal { background-color: #2da44e; }
+
+        .col-body {
+            background-color: #FFF0F4;
+            border: 1px solid #FFDEE6;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 20px;
+            min-height: 80px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        /* Нижний блок с общим результатом */
+        .simulation-result {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-header-bar {
+            background-color: #8B5A6B;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .result-body-bar {
+            background-color: #FFF0F4;
+            border: 1px solid #FFDEE6;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 20px;
+            min-height: 80px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #8B5A6B;
+        }
+
+        .btn-back { 
+            background-color: #FFF0F4; 
+            color: #FF9AA8; 
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .btn-back:hover { background-color: #FFDEE6; }
+
+        @media (max-width: 520px) {
+            .nav { flex-direction: column; gap: 10px; }
+            .results-grid { flex-direction: column; gap: 15px; }
+            .simulation-container { padding: 30px 15px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back">← Назад</a>
-    <h1>Nash Equilibrium</h1>
-    <p>Здесь будет содержание проекта.</p>
-    <p>Пока это заготовка — можете добавить сюда текст, картинки, код или ссылки.</p>
-  </div>
+
+    <div class="nav">
+        <h1>IT by Yana Lukyanava</h1>
+        <div class="nav-links">
+            <a href="index.html">← На главную</a>
+        </div>
+    </div>
+
+    <div class="header">
+        <h2>Project 6</h2>
+        <p>Nash Equilibrium · Prisoner's Dilemma</p>
+    </div>
+
+    <div class="simulation-container">
+        <button class="btn-run" onclick="runSimulation()">Run Simulation</button>
+
+        <div class="results-grid">
+            <!-- Колонка решений -->
+            <div class="result-col">
+                <div class="col-header header-decisions">Decisions</div>
+                <div class="col-body" id="decisionsBox">
+                    <!-- Сюда будут выводиться решения -->
+                    Ожидание запуска...
+                </div>
+            </div>
+
+            <!-- Колонка проверки на предательство -->
+            <div class="result-col">
+                <div class="col-header header-betrayal">Betrayal Check</div>
+                <div class="col-body" id="betrayalBox">
+                    <!-- Сюда будет выводиться проверка -->
+                    Ожидание запуска...
+                </div>
+            </div>
+        </div>
+
+        <!-- Общий результат -->
+        <div class="simulation-result">
+            <div class="result-header-bar">Simulation Result</div>
+            <div class="result-body-bar" id="finalResultBox">
+                <!-- Сюда будет выводиться итог -->
+                Ожидание запуска...
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="btn-back">Back to Home</a>
+
+    <script>
+        function runSimulation() {
+            const decisionsBox = document.getElementById('decisionsBox');
+            const betrayalBox = document.getElementById('betrayalBox');
+            const finalResultBox = document.getElementById('finalResultBox');
+
+            // 1. Генерируем случайные решения (0 - Сотрудничать, 1 - Предать)
+            const p1 = Math.random() > 0.5 ? 1 : 0;
+            const p2 = Math.random() > 0.5 ? 1 : 0;
+
+            const choice1 = p1 === 1 ? "Предать (Betray)" : "Сотрудничать (Cooperate)";
+            const choice2 = p2 === 1 ? "Предать (Betray)" : "Сотрудничать (Cooperate)";
+
+            // Выводим решения
+            decisionsBox.innerHTML = `
+                <strong>Игрок 1:</strong> ${choice1} <br><br>
+                <strong>Игрок 2:</strong> ${choice2}
+            `;
+
+            // 2. Проверяем на предательство
+            let betrayalText = "";
+            if (p1 === 1 && p2 === 0) {
+                betrayalText = "Игрок 1 предал Игрока 2! 😱";
+            } else if (p2 === 1 && p1 === 0) {
+                betrayalText = "Игрок 2 предал Игрока 1! 😱";
+            } else if (p1 === 1 && p2 === 1) {
+                betrayalText = "Оба предали друг друга. Взаимное предательство. 🤝🔪";
+            } else {
+                betrayalText = "Никто не предал. Оба сотрудничали. 🤝";
+            }
+            betrayalBox.textContent = betrayalText;
+
+            // 3. Выводим итоговый результат
+            // В дилемме заключенного:
+            // Если оба сотрудничают: по 3 года
+            // Если оба предают: по 2 года
+            // Если один предает, а другой сотрудничает: предатель 0 лет, сотрудничающий 5 лет
+            let resultText = "";
+            if (p1 === 0 && p2 === 0) {
+                resultText = "Оба сотрудничали. Каждый получил по 3 года тюрьмы.";
+                finalResultBox.style.color = "#2da44e"; // Зеленый
+            } else if (p1 === 1 && p2 === 1) {
+                resultText = "Оба предали. Каждый получил по 2 года тюрьмы.";
+                finalResultBox.style.color = "#E74C3C"; // Красный
+            } else if (p1 === 1 && p2 === 0) {
+                resultText = "Игрок 1 предал и вышел на свободу (0 лет). Игрок 2 сел на 5 лет.";
+                finalResultBox.style.color = "#E74C3C";
+            } else if (p1 === 0 && p2 === 1) {
+                resultText = "Игрок 2 предал и вышел на свободу (0 лет). Игрок 1 сел на 5 лет.";
+                finalResultBox.style.color = "#E74C3C";
+            }
+
+            finalResultBox.textContent = resultText;
+        }
+    </script>
+
 </body>
 </html>

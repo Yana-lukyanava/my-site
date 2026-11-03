@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT by Yana Lukyanava</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #FFF5F7;
+      color: #5A4A4D;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25);
+      padding: 45px 40px;
+      text-align: center;
+    }
+
+    .photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #FFD1DC;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #8B5A6B;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .meta {
+      color: #A88B94;
+      font-size: 1rem;
+      margin-bottom: 35px;
+    }
+
+    .meta p { margin: 4px 0; }
+
+    .project {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFF0F4;
+      border: 1px solid #FFDEE6;
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
+      text-align: left;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .project:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(255, 182, 193, 0.3);
+    }
+
+    .project h3 {
+      font-size: 1.05rem;
+      color: #8B5A6B;
+      margin-bottom: 2px;
+    }
+
+    .project .subtitle {
+      font-size: 0.85rem;
+      color: #B89AA3;
+    }
+
+    .project a {
+      background: #FFB6C1;
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .project a:hover { background: #FF9AA8; }
+
+    @media (max-width: 520px) {
+      .container { padding: 30px 20px; }
+      .project { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .project a { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="photo.jpg" alt="Yana Lukyanava" class="photo">
+
+    <h1>IT by Yana Lukyanava</h1>
+
+    <div class="meta">
+      <p>Group 1451</p>
+      <p>Teacher: Andrey Yaroshevich</p>
+    </div>
+
+    <div class="project">
+      <div><h3>Project 1</h3><div class="subtitle">ABBA Calculation</div></div>
+      <a href="project1.html">Open</a>
+    </div>
+    <div class="project">
+      <div><h3>Project 2</h3><div class="subtitle">Boolean logic</div></div>
+      <a href="project2.html">Open</a>
+    </div>
+    <div class="project">
+      <div><h3>Project 3</h3><div class="subtitle">Hamming Code</div></div>
+      <a href="project3.html">Open</a>
+    </div>
+    <div class="project">
+      <div><h3>Project 4</h3><div class="subtitle">LB(N) and Shannon</div></div>
+      <a href="project4.html">Open</a>
+    </div>
+    <div class="project">
+      <div><h3>Project 5</h3><div class="subtitle">WOW/BOW Generator</div></div>
+      <a href="project5.html">Open</a>
+    </div>
+    <div class="project">
+      <div><h3>Project 6</h3><div class="subtitle">Nash Equilibrium</div></div>
+      <a href="project6.html">Open</a>
+    </div>
+
+  </div>
+</body>
+</html>
